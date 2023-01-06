@@ -1,6 +1,4 @@
-#pragma once
-
-#include <glad/glad.h> 
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
 #include <iostream>
@@ -9,131 +7,129 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-
 #include "Camera.h"
-
 
 class WindowMgr
 {
 private:
-	GLFWwindow* _window;
-	Camera* _camera;
+    GLFWwindow *_window;
+    Camera *_camera;
+
 public:
-	static const unsigned int SCR_WIDTH = 800;
-	static const unsigned int SCR_HEIGHT = 600;
-	float deltaTime = 0.0f;	// time between current frame and last frame
-	float lastFrame = 0.0f;
+    static const unsigned int SCR_WIDTH = 800;
+    static const unsigned int SCR_HEIGHT = 600;
+    float deltaTime = 0.0f; // time between current frame and last frame
+    float lastFrame = 0.0f;
 
-	GLFWwindow* GetWindow() { return _window; }
+    GLFWwindow *GetWindow() { return _window; }
 
-	WindowMgr(Camera *camera)
-	{
-		glfwInit(); //³õÊ¼»¯GLFW
+    WindowMgr(Camera *camera)
+    {
+        glfwInit(); // åˆå§‹åŒ–GLFW
 
-	//Ê¹ÓÃglfwWindowHintº¯ÊıÀ´ÅäÖÃGLFW
-	//µÚÒ»¸ö²ÎÊı´ú±íÑ¡ÏîµÄÃû³Æ£¬µÚ¶ş¸ö²ÎÊı½ÓÊÜÒ»¸öÕûĞÍ£¬ÓÃÀ´ÉèÖÃÕâ¸öÑ¡ÏîµÄÖµ
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);//ÉèÖÃÖ÷°æ±¾ºÅ
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);//ÉèÖÃ´Î°æ±¾ºÅ
+        // ä½¿ç”¨glfwWindowHintå‡½æ•°æ¥é…ç½®GLFW
+        // ç¬¬ä¸€ä¸ªå‚æ•°ä»£è¡¨é€‰é¡¹çš„åç§°ï¼Œç¬¬äºŒä¸ªå‚æ•°æ¥å—ä¸€ä¸ªæ•´å‹ï¼Œç”¨æ¥è®¾ç½®è¿™ä¸ªé€‰é¡¹çš„å€¼
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3); // è®¾ç½®ä¸»ç‰ˆæœ¬å·
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3); // è®¾ç½®æ¬¡ç‰ˆæœ¬å·
 
-		//Ã÷È·¸æËßGLFWĞèÒªÊ¹ÓÃºËĞÄÄ£Ê½ÒâÎ¶×ÅÖ»ÄÜÊ¹ÓÃOpenGL¹¦ÄÜµÄÒ»¸ö×Ó¼¯£¨Ã»ÓĞÏòºó¼æÈİÌØĞÔ£©
-		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);//ÉèÖÃºËĞÄÄ£Ê½
+        // æ˜ç¡®å‘Šè¯‰GLFWéœ€è¦ä½¿ç”¨æ ¸å¿ƒæ¨¡å¼æ„å‘³ç€åªèƒ½ä½¿ç”¨OpenGLåŠŸèƒ½çš„ä¸€ä¸ªå­é›†ï¼ˆæ²¡æœ‰å‘åå…¼å®¹ç‰¹æ€§ï¼‰
+        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); // è®¾ç½®æ ¸å¿ƒæ¨¡å¼
 #ifdef __APPLE__
-		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 
-		_window = nullptr;
-		_camera = camera;
-	}
-	~WindowMgr()
-	{
-		//µ±äÖÈ¾Ñ­»·½áÊøºóÎÒÃÇĞèÒªÕıÈ·ÊÍ·Å/É¾³ıÖ®Ç°µÄ·ÖÅäµÄËùÓĞ×ÊÔ´¡£
-	//¿ÉÒÔÔÚmainº¯ÊıµÄ×îºóµ÷ÓÃglfwTerminateº¯ÊıÀ´Íê³É¡£
-		// glfw: terminate, clearing all previously allocated GLFW resources.
-		glfwTerminate();
-		_window = nullptr;
-	}
+        _window = nullptr;
+        _camera = camera;
+    }
+    ~WindowMgr()
+    {
+        // å½“æ¸²æŸ“å¾ªç¯ç»“æŸåæˆ‘ä»¬éœ€è¦æ­£ç¡®é‡Šæ”¾/åˆ é™¤ä¹‹å‰çš„åˆ†é…çš„æ‰€æœ‰èµ„æºã€‚
+        // å¯ä»¥åœ¨mainå‡½æ•°çš„æœ€åè°ƒç”¨glfwTerminateå‡½æ•°æ¥å®Œæˆã€‚
+        //  glfw: terminate, clearing all previously allocated GLFW resources.
+        glfwTerminate();
+        _window = nullptr;
+    }
 
+    bool CreateWindow(int w, int h)
+    {
+        // åˆ›å»ºä¸€ä¸ªçª—å£å¯¹è±¡
+        // glfwCreateWindowå‡½æ•°éœ€è¦çª—å£çš„å®½å’Œé«˜ä½œä¸ºå®ƒçš„å‰ä¸¤ä¸ªå‚æ•°ã€‚ç¬¬ä¸‰ä¸ªå‚æ•°è¡¨ç¤ºè¿™ä¸ªçª—å£çš„åç§°
+        // æœ€åä¸¤ä¸ªå‚æ•°æˆ‘ä»¬æš‚æ—¶å¿½ç•¥,æœ€åè¿”å›ä¸€ä¸ªGLFWwindowå¯¹è±¡
+        _window = glfwCreateWindow(w, h, "LearnOpenGL", NULL, NULL);
+        if (_window == NULL)
+        {
+            std::cout << "Failed to create GLFW window" << std::endl;
+            glfwTerminate();
+            return false;
+        }
+        // å°†çª—å£çš„ä¸Šä¸‹æ–‡è®¾ç½®ä¸ºå½“å‰çº¿ç¨‹çš„ä¸»ä¸Šä¸‹æ–‡
+        glfwMakeContextCurrent(_window);
 
-	bool CreateWindow(int w, int h)
-	{
-		//´´½¨Ò»¸ö´°¿Ú¶ÔÏó
-	//glfwCreateWindowº¯ÊıĞèÒª´°¿ÚµÄ¿íºÍ¸ß×÷ÎªËüµÄÇ°Á½¸ö²ÎÊı¡£µÚÈı¸ö²ÎÊı±íÊ¾Õâ¸ö´°¿ÚµÄÃû³Æ
-	//×îºóÁ½¸ö²ÎÊıÎÒÃÇÔİÊ±ºöÂÔ,×îºó·µ»ØÒ»¸öGLFWwindow¶ÔÏó
-		_window = glfwCreateWindow(w, h, "LearnOpenGL", NULL, NULL);
-		if (_window == NULL)
-		{
-			std::cout << "Failed to create GLFW window" << std::endl;
-			glfwTerminate();
-			return false;
-		}
-		//½«´°¿ÚµÄÉÏÏÂÎÄÉèÖÃÎªµ±Ç°Ïß³ÌµÄÖ÷ÉÏÏÂÎÄ
-		glfwMakeContextCurrent(_window);
+        // åˆå§‹åŒ–GLAD
+        // GLADæ˜¯ç”¨æ¥ç®¡ç†OpenGLçš„å‡½æ•°æŒ‡é’ˆçš„ï¼Œæ‰€ä»¥åœ¨è°ƒç”¨ä»»ä½•OpenGLçš„å‡½æ•°ä¹‹å‰æˆ‘ä»¬éœ€è¦åˆå§‹åŒ–GLADã€‚
+        // ç»™GLADä¼ å…¥äº†ç”¨æ¥åŠ è½½ç³»ç»Ÿç›¸å…³çš„OpenGLå‡½æ•°æŒ‡é’ˆåœ°å€çš„å‡½æ•°ã€‚
+        // GLFWç»™æˆ‘ä»¬çš„æ˜¯glfwGetProcAddressï¼Œå®ƒæ ¹æ®æˆ‘ä»¬ç¼–è¯‘çš„ç³»ç»Ÿå®šä¹‰äº†æ­£ç¡®çš„å‡½æ•°ã€‚
+        if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+        {
+            std::cout << "Failed to initialize GLAD" << std::endl;
+            return false;
+        }
 
-		//³õÊ¼»¯GLAD
-		//GLADÊÇÓÃÀ´¹ÜÀíOpenGLµÄº¯ÊıÖ¸ÕëµÄ£¬ËùÒÔÔÚµ÷ÓÃÈÎºÎOpenGLµÄº¯ÊıÖ®Ç°ÎÒÃÇĞèÒª³õÊ¼»¯GLAD¡£
-		//¸øGLAD´«ÈëÁËÓÃÀ´¼ÓÔØÏµÍ³Ïà¹ØµÄOpenGLº¯ÊıÖ¸ÕëµØÖ·µÄº¯Êı¡£
-		//GLFW¸øÎÒÃÇµÄÊÇglfwGetProcAddress£¬Ëü¸ù¾İÎÒÃÇ±àÒëµÄÏµÍ³¶¨ÒåÁËÕıÈ·µÄº¯Êı¡£
-		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-		{
-			std::cout << "Failed to initialize GLAD" << std::endl;
-			return false;
-		}
+        return true;
+    }
 
-		return true;
-	}
+    // process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
+    void MonitorInputEvent()
+    {
+        if (glfwGetKey(_window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+            glfwSetWindowShouldClose(_window, true);
+        if (glfwGetKey(_window, GLFW_KEY_W) == GLFW_PRESS)
+            _camera->ProcessKeyboard(FORWARD, deltaTime);
+        if (glfwGetKey(_window, GLFW_KEY_S) == GLFW_PRESS)
+            _camera->ProcessKeyboard(BACKWARD, deltaTime);
+        if (glfwGetKey(_window, GLFW_KEY_A) == GLFW_PRESS)
+            _camera->ProcessKeyboard(LEFT, deltaTime);
+        if (glfwGetKey(_window, GLFW_KEY_D) == GLFW_PRESS)
+            _camera->ProcessKeyboard(RIGHT, deltaTime);
+    }
 
-	// process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
-	void MonitorInputEvent()
-	{
-		if (glfwGetKey(_window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-			glfwSetWindowShouldClose(_window, true);
-		if (glfwGetKey(_window, GLFW_KEY_W) == GLFW_PRESS)
-			_camera->ProcessKeyboard(FORWARD, deltaTime);
-		if (glfwGetKey(_window, GLFW_KEY_S) == GLFW_PRESS)
-			_camera->ProcessKeyboard(BACKWARD, deltaTime);
-		if (glfwGetKey(_window, GLFW_KEY_A) == GLFW_PRESS)
-			_camera->ProcessKeyboard(LEFT, deltaTime);
-		if (glfwGetKey(_window, GLFW_KEY_D) == GLFW_PRESS)
-			_camera->ProcessKeyboard(RIGHT, deltaTime);
-	}
+    // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
+    void SwapBufferAndPollIOEvents()
+    {
+        // æ£€æŸ¥å¹¶è°ƒç”¨äº‹ä»¶ï¼Œäº¤æ¢ç¼“å†²
+        glfwSwapBuffers(_window);
+        glfwPollEvents();
+    }
 
-	// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
-	void SwapBufferAndPollIOEvents()
-	{
-		//¼ì²é²¢µ÷ÓÃÊÂ¼ş£¬½»»»»º³å
-		glfwSwapBuffers(_window);
-		glfwPollEvents();
-	}
+    bool CheckWindowShouldClose()
+    {
+        return glfwWindowShouldClose(_window);
+    }
 
-	bool CheckWindowShouldClose()
-	{
-		return glfwWindowShouldClose(_window);
-	}
+    void SetFramebufferSizeCallback(GLFWframebuffersizefun callback)
+    {
+        // å¿…é¡»å‘Šè¯‰OpenGLæ¸²æŸ“çª—å£çš„å°ºå¯¸å¤§å°ï¼Œå³è§†å£(Viewport)ï¼Œ
+        // è¿™æ ·OpenGLæ‰åªèƒ½çŸ¥é“æ€æ ·æ ¹æ®çª—å£å¤§å°æ˜¾ç¤ºæ•°æ®å’Œåæ ‡ã€‚
+        // å¯ä»¥é€šè¿‡è°ƒç”¨glViewportå‡½æ•°æ¥è®¾ç½®çª—å£çš„ç»´åº¦
+        //  å¯ä»¥å°†è§†å£çš„ç»´åº¦è®¾ç½®ä¸ºæ¯”GLFWçš„ç»´åº¦å°ï¼Œè¿™æ ·å­ä¹‹åæ‰€æœ‰çš„OpenGLæ¸²æŸ“
+        //  å°†ä¼šåœ¨ä¸€ä¸ªæ›´å°çš„çª—å£ä¸­æ˜¾ç¤ºï¼Œä¹Ÿå¯ä»¥å°†ä¸€äº›å…¶å®ƒå…ƒç´ æ˜¾ç¤ºåœ¨OpenGLè§†å£ä¹‹å¤–ã€‚
 
-	void SetFramebufferSizeCallback(GLFWframebuffersizefun callback)
-	{
-		//±ØĞë¸æËßOpenGLäÖÈ¾´°¿ÚµÄ³ß´ç´óĞ¡£¬¼´ÊÓ¿Ú(Viewport)£¬
-	//ÕâÑùOpenGL²ÅÖ»ÄÜÖªµÀÔõÑù¸ù¾İ´°¿Ú´óĞ¡ÏÔÊ¾Êı¾İºÍ×ø±ê¡£
-	//¿ÉÒÔÍ¨¹ıµ÷ÓÃglViewportº¯ÊıÀ´ÉèÖÃ´°¿ÚµÄÎ¬¶È
-	// ¿ÉÒÔ½«ÊÓ¿ÚµÄÎ¬¶ÈÉèÖÃÎª±ÈGLFWµÄÎ¬¶ÈĞ¡£¬ÕâÑù×ÓÖ®ºóËùÓĞµÄOpenGLäÖÈ¾
-	// ½«»áÔÚÒ»¸ö¸üĞ¡µÄ´°¿ÚÖĞÏÔÊ¾£¬Ò²¿ÉÒÔ½«Ò»Ğ©ÆäËüÔªËØÏÔÊ¾ÔÚOpenGLÊÓ¿ÚÖ®Íâ¡£
+        // å½“ç”¨æˆ·æ”¹å˜çª—å£çš„å¤§å°çš„æ—¶å€™ï¼Œè§†å£ä¹Ÿåº”è¯¥è¢«è°ƒæ•´ã€‚
+        // æˆ‘ä»¬å¯ä»¥å¯¹çª—å£æ³¨å†Œä¸€ä¸ªå›è°ƒå‡½æ•°ï¼Œå®ƒä¼šåœ¨æ¯æ¬¡çª—å£å¤§å°è¢«è°ƒæ•´çš„æ—¶å€™è¢«è°ƒç”¨
+        // å¸§ç¼“å†²å¤§å°å‡½æ•°éœ€è¦ä¸€ä¸ªGLFWwindowä½œä¸ºå®ƒçš„ç¬¬ä¸€ä¸ªå‚æ•°ï¼Œä»¥åŠä¸¤ä¸ªæ•´æ•°è¡¨ç¤ºçª—å£çš„æ–°ç»´åº¦ã€‚
+        // æ¯å½“çª—å£æ”¹å˜å¤§å°ï¼ŒGLFWä¼šè°ƒç”¨è¿™ä¸ªå‡½æ•°å¹¶å¡«å……ç›¸åº”çš„å‚æ•°ä¾›ä½ å¤„ç†ã€‚
+        // æ³¨å†Œè¿™ä¸ªå‡½æ•°ï¼Œå‘Šè¯‰GLFWæˆ‘ä»¬å¸Œæœ›æ¯å½“çª—å£è°ƒæ•´å¤§å°çš„æ—¶å€™è°ƒç”¨è¿™ä¸ªå‡½æ•°ï¼š
+        glfwSetFramebufferSizeCallback(_window, callback);
+        // å½“çª—å£è¢«ç¬¬ä¸€æ¬¡æ˜¾ç¤ºçš„æ—¶å€™framebuffer_size_callbackä¹Ÿä¼šè¢«è°ƒç”¨ã€‚
+        // å¯¹äºè§†ç½‘è†œ(Retina)æ˜¾ç¤ºå±ï¼Œwidthå’Œheightéƒ½ä¼šæ˜æ˜¾æ¯”åŸè¾“å…¥å€¼æ›´é«˜ä¸€ç‚¹ã€‚
+    }
 
-	//µ±ÓÃ»§¸Ä±ä´°¿ÚµÄ´óĞ¡µÄÊ±ºò£¬ÊÓ¿ÚÒ²Ó¦¸Ã±»µ÷Õû¡£
-	//ÎÒÃÇ¿ÉÒÔ¶Ô´°¿Ú×¢²áÒ»¸ö»Øµ÷º¯Êı£¬Ëü»áÔÚÃ¿´Î´°¿Ú´óĞ¡±»µ÷ÕûµÄÊ±ºò±»µ÷ÓÃ
-	//Ö¡»º³å´óĞ¡º¯ÊıĞèÒªÒ»¸öGLFWwindow×÷ÎªËüµÄµÚÒ»¸ö²ÎÊı£¬ÒÔ¼°Á½¸öÕûÊı±íÊ¾´°¿ÚµÄĞÂÎ¬¶È¡£
-	//Ã¿µ±´°¿Ú¸Ä±ä´óĞ¡£¬GLFW»áµ÷ÓÃÕâ¸öº¯Êı²¢Ìî³äÏàÓ¦µÄ²ÎÊı¹©Äã´¦Àí¡£
-	//×¢²áÕâ¸öº¯Êı£¬¸æËßGLFWÎÒÃÇÏ£ÍûÃ¿µ±´°¿Úµ÷Õû´óĞ¡µÄÊ±ºòµ÷ÓÃÕâ¸öº¯Êı£º
-		glfwSetFramebufferSizeCallback(_window, callback);
-		//µ±´°¿Ú±»µÚÒ»´ÎÏÔÊ¾µÄÊ±ºòframebuffer_size_callbackÒ²»á±»µ÷ÓÃ¡£
-	//¶ÔÓÚÊÓÍøÄ¤(Retina)ÏÔÊ¾ÆÁ£¬widthºÍheight¶¼»áÃ÷ÏÔ±ÈÔ­ÊäÈëÖµ¸ü¸ßÒ»µã¡£
-	}
-
-	void SetSetCursorPosCallback(GLFWcursorposfun callback)
-	{
-		glfwSetCursorPosCallback(_window, callback);
-	}
-	void SetScrollCallback(GLFWscrollfun callback)
-	{
-		glfwSetScrollCallback(_window, callback);
-	}
+    void SetSetCursorPosCallback(GLFWcursorposfun callback)
+    {
+        glfwSetCursorPosCallback(_window, callback);
+    }
+    void SetScrollCallback(GLFWscrollfun callback)
+    {
+        glfwSetScrollCallback(_window, callback);
+    }
 };
