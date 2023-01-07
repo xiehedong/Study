@@ -1,6 +1,6 @@
-// GLAD蹇呴』鍖呭惈鍦℅LFW涔嬪墠锛孏LAD鐨勫ご鏂囦欢鍖呭惈浜嗘纭殑OpenGL澶存枃浠讹紙渚嬪GL/gl.h锛�
-// 鎵€浠ラ渶瑕佸湪鍏跺畠渚濊禆浜嶰penGL鐨勫ご鏂囦欢涔嬪墠鍖呭惈GLAD銆�
-#include <glad/glad.h>
+//GLAD必须包含在GLFW之前，GLAD的头文件包含了正确的OpenGL头文件（例如GL/gl.h）
+//所以需要在其它依赖于OpenGL的头文件之前包含GLAD。
+#include <glad/glad.h> 
 #include <GLFW/glfw3.h>
 
 #include <iostream>
@@ -17,7 +17,7 @@ static float lastX = WindowMgr::SCR_WIDTH / 2.0f;
 static float lastY = WindowMgr::SCR_HEIGHT / 2.0f;
 static bool firstMouse = true;
 static Camera camera(glm::vec3(0.0f, 0.0f, 10.0f));
-void mouse_callback(GLFWwindow *window, double xposIn, double yposIn)
+void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
 {
     float xpos = static_cast<float>(xposIn);
     float ypos = static_cast<float>(yposIn);
@@ -37,107 +37,113 @@ void mouse_callback(GLFWwindow *window, double xposIn, double yposIn)
 
     camera.ProcessMouseMovement(xoffset, yoffset);
 }
-void scroll_callback(GLFWwindow *window, double xoffset, double yoffset)
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
     camera.ProcessMouseScroll(static_cast<float>(yoffset));
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
-void framebuffer_size_callback(GLFWwindow *window, int width, int height)
+void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
-    // 前锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟狡达拷锟斤拷锟斤拷锟铰角碉拷位锟矫★拷锟斤拷锟斤拷锟斤拷锟酵碉拷锟侥革拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷染锟斤拷锟节的匡拷锟饺和高度ｏ拷锟斤拷锟截ｏ拷锟斤拷
+    //前两个参数控制窗口左下角的位置。第三个和第四个参数控制渲染窗口的宽度和高度（像素）。
     glViewport(0, 0, width, height);
 }
 
 glm::vec3 cubePositions[] = {
-    glm::vec3(0.0f, 0.0f, 0.0f),
-    glm::vec3(2.0f, 5.0f, -15.0f),
-    glm::vec3(-1.5f, -2.2f, -2.5f),
-    glm::vec3(-3.8f, -2.0f, -12.3f),
-    glm::vec3(2.4f, -0.4f, -3.5f),
-    glm::vec3(-1.7f, 3.0f, -7.5f),
-    glm::vec3(1.3f, -2.0f, -2.5f),
-    glm::vec3(1.5f, 2.0f, -2.5f),
-    glm::vec3(1.5f, 0.2f, -1.5f),
-    glm::vec3(-1.3f, 1.0f, -1.5f)};
+  glm::vec3(0.0f,  0.0f,  0.0f),
+  glm::vec3(2.0f,  5.0f, -15.0f),
+  glm::vec3(-1.5f, -2.2f, -2.5f),
+  glm::vec3(-3.8f, -2.0f, -12.3f),
+  glm::vec3(2.4f, -0.4f, -3.5f),
+  glm::vec3(-1.7f,  3.0f, -7.5f),
+  glm::vec3(1.3f, -2.0f, -2.5f),
+  glm::vec3(1.5f,  2.0f, -2.5f),
+  glm::vec3(1.5f,  0.2f, -1.5f),
+  glm::vec3(-1.3f,  1.0f, -1.5f)
+};
+
 
 /*
-锟斤拷锟斤拷1锟斤拷图锟斤拷锟斤拷要
-1锟斤拷锟斤拷VAO锟斤拷锟斤拷glGenVertexArrays锟斤拷glBindVertexArray锟斤拷
-2锟斤拷锟斤拷VBO锟斤拷锟斤拷锟芥顶锟斤拷锟斤拷锟捷ｏ拷锟斤拷glGenBuffer锟斤拷glBindBuffer锟斤拷glBufferData锟斤拷
-3锟斤拷锟斤拷EBO(也锟斤拷IBO)锟斤拷锟斤拷锟芥顶锟斤拷锟斤拷锟斤拷锟斤拷锟捷★拷glGenBuffer锟斤拷glBindBuffer锟斤拷glBufferData锟斤拷
-4锟斤拷锟斤拷锟斤拷锟斤拷色锟斤拷锟斤拷锟斤拷锟斤拷锟狡拷危锟斤拷锟斤拷锟絞lCreateShader锟斤拷glShaderSource锟斤拷glCompileShader锟斤拷
-5锟斤拷锟斤拷锟斤拷锟斤拷色锟斤拷锟斤拷锟斤拷glCreateProgram锟斤拷glAttachShader锟斤拷glLinkProgram锟斤拷glUseProgram锟斤拷
-6锟斤拷锟斤拷锟接讹拷锟斤拷锟斤拷锟皆ｏ拷锟斤拷glVertexAttribPointer锟斤拷glEnableVertexAttribArray锟斤拷
-7锟斤拷锟斤拷锟狡ｏ拷锟斤拷glPolygonMode锟斤拷锟斤拷选锟斤拷锟斤拷glDrawElements/glDrawArrays锟斤拷
+绘制1个图形需要
+1、绑定VAO；【glGenVertexArrays、glBindVertexArray】
+2、绑定VBO、保存顶点数据；【glGenBuffer、glBindBuffer、glBufferData】
+3、绑定EBO(也叫IBO)、保存顶点索引数据【glGenBuffer、glBindBuffer、glBufferData】
+4、编译着色器（顶点和片段）；【glCreateShader、glShaderSource、glCompileShader】
+5、链接着色器；【glCreateProgram、glAttachShader、glLinkProgram、glUseProgram】
+6、链接顶点属性；【glVertexAttribPointer、glEnableVertexAttribArray】
+7、绘制；【glPolygonMode（可选）、glDrawElements/glDrawArrays】
 */
 
-// float vertices[] = {
-//     /*锟斤拷锟斤拷锟斤拷*/
-//     -0.5f,-0.5f,0.0f,
-//     0.5f, -0.5f,0.0f,
-//     0.0f,  0.5f,0.0f
+//float vertices[] = {
+//    /*三角形*/
+//    -0.5f,-0.5f,0.0f,
+//    0.5f, -0.5f,0.0f,
+//    0.0f,  0.5f,0.0f
 //
-//     ///*锟斤拷锟斤拷*/
-//     //0.5f, 0.5f, 0.0f,   // 锟斤拷锟较斤拷
-//     //0.5f, -0.5f, 0.0f,  // 锟斤拷锟铰斤拷
-//     //-0.5f, -0.5f, 0.0f, // 锟斤拷锟铰斤拷
-//     //-0.5f, 0.5f, 0.0f   // 锟斤拷锟较斤拷
-// };
+//    ///*矩形*/
+//    //0.5f, 0.5f, 0.0f,   // 右上角
+//    //0.5f, -0.5f, 0.0f,  // 右下角
+//    //-0.5f, -0.5f, 0.0f, // 左下角
+//    //-0.5f, 0.5f, 0.0f   // 左上角
+//};
 
-// float vertices[] = {
-//	// 位锟斤拷              // 锟斤拷色
-//	 0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,   // 锟斤拷锟斤拷
-//	-0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,   // 锟斤拷锟斤拷
-//	 0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f    // 锟斤拷锟斤拷
-// };
+//float vertices[] = {
+//	// 位置              // 颜色
+//	 0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,   // 右下
+//	-0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,   // 左下
+//	 0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f    // 顶部
+//};
 
 float vertices[] = {
-    -0.5f, -0.5f, -0.5f, 0.0f, 0.0f,
-    0.5f, -0.5f, -0.5f, 1.0f, 0.0f,
-    0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
-    0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
-    -0.5f, 0.5f, -0.5f, 0.0f, 1.0f,
-    -0.5f, -0.5f, -0.5f, 0.0f, 0.0f,
+	-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+	 0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
+	 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+	 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+	-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+	-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
 
-    -0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
-    0.5f, -0.5f, 0.5f, 1.0f, 0.0f,
-    0.5f, 0.5f, 0.5f, 1.0f, 1.0f,
-    0.5f, 0.5f, 0.5f, 1.0f, 1.0f,
-    -0.5f, 0.5f, 0.5f, 0.0f, 1.0f,
-    -0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
+	-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+	 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+	 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+	 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+	-0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
+	-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
 
-    -0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
-    -0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
-    -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-    -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-    -0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
-    -0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
+	-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+	-0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+	-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+	-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+	-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+	-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
 
-    0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
-    0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
-    0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-    0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-    0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
-    0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
+	 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+	 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+	 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+	 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+	 0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+	 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
 
-    -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-    0.5f, -0.5f, -0.5f, 1.0f, 1.0f,
-    0.5f, -0.5f, 0.5f, 1.0f, 0.0f,
-    0.5f, -0.5f, 0.5f, 1.0f, 0.0f,
-    -0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
-    -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
+	-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+	 0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
+	 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+	 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+	-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+	-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
 
-    -0.5f, 0.5f, -0.5f, 0.0f, 1.0f,
-    0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
-    0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
-    0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
-    -0.5f, 0.5f, 0.5f, 0.0f, 0.0f,
-    -0.5f, 0.5f, -0.5f, 0.0f, 1.0f};
+	-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+	 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+	 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+	 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+	-0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
+	-0.5f,  0.5f, -0.5f,  0.0f, 1.0f
+};
 
 unsigned int indices[] = {
-    0, 1, 2,
-    1, 2, 3};
+    0,1,2,
+    1,2,3
+};
+
+
 
 int main()
 {
@@ -158,97 +164,101 @@ int main()
     windowMgr.SetSetCursorPosCallback(mouse_callback);
     windowMgr.SetScrollCallback(scroll_callback);
 
-    //----------------锟斤拷VAO--------------------start
-    // 锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟�(Vertex Array Object, VAO)锟斤拷锟斤拷锟今顶点缓锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷蠖ǎ锟�
-    // 锟轿猴拷锟斤拷锟侥讹拷锟斤拷锟斤拷锟皆碉拷锟矫讹拷锟结储锟斤拷锟斤拷锟斤拷锟絍AO锟叫★拷锟斤拷锟斤拷锟侥好达拷锟斤拷锟角ｏ拷
-    // 锟斤拷锟斤拷锟矫讹拷锟斤拷锟斤拷锟斤拷指锟斤拷时锟斤拷锟斤拷只锟斤拷要锟斤拷锟斤拷些锟斤拷锟斤拷执锟斤拷一锟轿ｏ拷之锟斤拷锟劫伙拷锟斤拷锟斤拷锟斤拷锟绞憋拷锟街伙拷锟揭拷锟斤拷锟接︼拷锟絍AO锟斤拷锟斤拷锟斤拷
-    // 锟斤拷锟斤拷锟斤拷锟矫碉拷锟斤拷锟斤拷状态锟斤拷锟斤拷锟芥储锟斤拷VAO锟斤拷(锟斤拷锟斤拷EBO)
-    // 一锟斤拷VAO锟斤拷锟斤拷岽拷锟斤拷锟斤拷锟斤拷锟叫╋拷锟斤拷荩锟�
-    // glEnableVertexAttribArray锟斤拷glDisableVertexAttribArray锟侥碉拷锟矫★拷
-    // 通锟斤拷glVertexAttribPointer锟斤拷锟矫的讹拷锟斤拷锟斤拷锟斤拷锟斤拷锟矫★拷
-    // 通锟斤拷glVertexAttribPointer锟斤拷锟斤拷锟诫顶锟斤拷锟斤拷锟皆癸拷锟斤拷锟侥讹拷锟姐缓锟斤拷锟斤拷锟�
+    //----------------绑定VAO--------------------start
+    //顶点数组对象(Vertex Array Object, VAO)可以像顶点缓冲对象那样被绑定，
+    //任何随后的顶点属性调用都会储存在这个VAO中。这样的好处就是，
+    //当配置顶点属性指针时，你只需要将那些调用执行一次，之后再绘制物体的时候只需要绑定相应的VAO就行了
+    //以下设置的所有状态都将存储在VAO中(包括EBO)
+    //一个VAO对象会储存以下这些内容：
+    //glEnableVertexAttribArray和glDisableVertexAttribArray的调用。
+    //通过glVertexAttribPointer设置的顶点属性配置。
+    //通过glVertexAttribPointer调用与顶点属性关联的顶点缓冲对象。
     unsigned int VAO;
     glGenVertexArrays(1, &VAO);
     glBindVertexArray(VAO);
 
-    // OpenGL锟侥猴拷锟斤拷模式要锟斤拷锟斤拷锟斤拷使锟斤拷VAO锟斤拷锟斤拷锟斤拷锟斤拷知锟斤拷锟斤拷锟斤拷未锟斤拷锟斤拷锟斤拷堑亩锟斤拷锟斤拷锟斤拷搿�
-    // 锟斤拷锟斤拷锟斤拷前锟絍AO失锟杰ｏ拷OpenGL锟斤拷芫锟斤拷锟斤拷锟斤拷魏味锟斤拷锟斤拷锟�
-    //----------------锟斤拷VAO--------------------end
+    //OpenGL的核心模式要求我们使用VAO，所以它知道该如何处理我们的顶点输入。
+    //如果我们绑定VAO失败，OpenGL会拒绝绘制任何东西。
+    //----------------绑定VAO--------------------end
 
-    //----------------锟斤拷锟芥顶锟斤拷锟斤拷锟斤拷--------------------start
-    // 锟斤拷glGenBuffers锟斤拷锟斤拷锟斤拷一锟斤拷锟斤拷锟斤拷ID锟斤拷锟斤拷一锟斤拷VBO锟斤拷锟斤拷
+    //----------------保存顶点数据--------------------start
+    //用glGenBuffers函数和一个缓冲ID生成一个VBO对象
     unsigned int VBO;
     glGenBuffers(1, &VBO);
-    // OpenGL锟叫很多缓锟斤拷锟斤拷锟斤拷锟斤拷停锟斤拷锟斤拷慊猴拷锟斤拷锟斤拷幕锟斤拷锟斤拷锟斤拷锟斤拷锟紾L_ARRAY_BUFFER锟斤拷OpenGL锟斤拷锟斤拷锟斤拷锟斤拷同时锟襟定讹拷锟斤拷锟斤拷澹�
-    // 只要锟斤拷锟斤拷锟角诧拷同锟侥伙拷锟斤拷锟斤拷锟酵★拷锟斤拷锟角匡拷锟斤拷使锟斤拷glBindBuffer锟斤拷锟斤拷锟斤拷锟铰达拷锟斤拷锟侥伙拷锟斤拷蠖ǖ锟紾L_ARRAY_BUFFER目锟斤拷锟较ｏ拷
+    //OpenGL有很多缓冲对象类型，顶点缓冲对象的缓冲类型是GL_ARRAY_BUFFER。OpenGL允许我们同时绑定多个缓冲，
+    //只要它们是不同的缓冲类型。我们可以使用glBindBuffer函数把新创建的缓冲绑定到GL_ARRAY_BUFFER目标上：
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    // 锟斤拷锟斤拷一锟斤拷锟斤拷锟斤拷锟斤拷使锟矫碉拷锟轿何ｏ拷锟斤拷GL_ARRAY_BUFFER目锟斤拷锟较的ｏ拷锟斤拷锟斤拷锟斤拷枚锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷玫锟角帮拷蠖ǖ幕锟斤拷锟�(VBO)锟斤拷
-    // 然锟斤拷锟斤拷锟角匡拷锟皆碉拷锟斤拷glBufferData锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟街帮拷锟斤拷锟侥讹拷锟斤拷锟斤拷锟捷革拷锟狡碉拷锟斤拷锟斤拷锟斤拷诖锟斤拷校锟�
-    // glBufferData锟斤拷一锟斤拷专锟斤拷锟斤拷锟斤拷锟斤拷锟矫伙拷锟斤拷锟斤拷锟斤拷锟斤拷莞锟斤拷频锟斤拷锟角帮拷蠖ɑ锟斤拷锟侥猴拷锟斤拷锟斤拷
-    // 锟斤拷锟侥碉拷一锟斤拷锟斤拷锟斤拷锟斤拷目锟疥缓锟斤拷锟斤拷锟斤拷停锟斤拷锟斤拷慊猴拷锟斤拷锟斤拷前锟襟定碉拷GL_ARRAY_BUFFER目锟斤拷锟较★拷
-    // 锟节讹拷锟斤拷锟斤拷锟斤拷指锟斤拷锟斤拷锟斤拷锟斤拷锟捷的达拷小(锟斤拷锟街斤拷为锟斤拷位)锟斤拷锟斤拷一锟斤拷锟津单碉拷sizeof锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷荽锟叫★拷锟斤拷小锟�
-    // 锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷希锟斤拷锟斤拷锟酵碉拷实锟斤拷锟斤拷锟捷★拷
-    // 锟斤拷锟侥革拷锟斤拷锟斤拷指锟斤拷锟斤拷锟斤拷锟斤拷希锟斤拷锟皆匡拷锟斤拷喂锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷荨锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟绞斤拷锟�
-    // GL_STATIC_DRAW 锟斤拷锟斤拷锟捷诧拷锟斤拷蚣负锟斤拷锟斤拷锟侥变。
-    // GL_DYNAMIC_DRAW锟斤拷锟斤拷锟捷会被锟侥憋拷芏唷�
-    // GL_STREAM_DRAW 锟斤拷锟斤拷锟斤拷每锟轿伙拷锟斤拷时锟斤拷锟斤拷谋洹�
+    //从这一刻起，我们使用的任何（在GL_ARRAY_BUFFER目标上的）缓冲调用都会用来配置当前绑定的缓冲(VBO)。
+    //然后我们可以调用glBufferData函数，它会把之前定义的顶点数据复制到缓冲的内存中：
+    //glBufferData是一个专门用来把用户定义的数据复制到当前绑定缓冲的函数。
+    //它的第一个参数是目标缓冲的类型：顶点缓冲对象当前绑定到GL_ARRAY_BUFFER目标上。
+    //第二个参数指定传输数据的大小(以字节为单位)；用一个简单的sizeof计算出顶点数据大小就行。
+    //第三个参数是我们希望发送的实际数据。
+    //第四个参数指定了我们希望显卡如何管理给定的数据。它有三种形式：
+    //GL_STATIC_DRAW ：数据不会或几乎不会改变。
+    //GL_DYNAMIC_DRAW：数据会被改变很多。
+    //GL_STREAM_DRAW ：数据每次绘制时都会改变。
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-    //----------------锟斤拷锟芥顶锟斤拷锟斤拷锟斤拷--------------------end
+    //----------------保存顶点数据--------------------end
 
-    //----------------锟斤拷锟芥顶锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷--------------------start
+    //----------------保存顶点索引数据--------------------start
     /*unsigned int EBO;
     glGenBuffers(1, &EBO);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);*/
-    //----------------锟斤拷锟芥顶锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷--------------------end
+    //----------------保存顶点索引数据--------------------end
 
-    //----------------锟斤拷锟接讹拷锟斤拷锟斤拷锟斤拷--------------------start
-    // 锟斤拷锟姐缓锟斤拷锟斤拷锟捷会被锟斤拷锟斤拷为锟斤拷锟斤拷锟斤拷锟斤拷锟接ｏ拷
-    // 位锟斤拷锟斤拷锟捷憋拷锟斤拷锟斤拷为32位锟斤拷4锟街节ｏ拷锟斤拷锟斤拷值锟斤拷
-    // 每锟斤拷位锟矫帮拷锟斤拷3锟斤拷锟斤拷锟斤拷锟斤拷值锟斤拷
-    // 锟斤拷锟斤拷3锟斤拷值之锟斤拷没锟叫匡拷隙锟斤拷锟斤拷锟斤拷锟斤拷值锟斤拷锟斤拷锟解几锟斤拷值锟斤拷锟斤拷锟斤拷锟叫斤拷锟斤拷锟斤拷锟斤拷(Tightly Packed)锟斤拷
-    // 锟斤拷锟斤拷锟叫碉拷一锟斤拷值锟节伙拷锟藉开始锟斤拷位锟矫★拷
-    // 锟斤拷锟斤拷锟斤拷些锟斤拷息锟斤拷锟角就匡拷锟斤拷使锟斤拷glVertexAttribPointer锟斤拷锟斤拷锟斤拷锟斤拷OpenGL锟斤拷锟斤拷谓锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷荩锟接︼拷玫锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟较ｏ拷锟剿ｏ拷
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *)0);
+
+
+    //----------------链接顶点属性--------------------start
+    //顶点缓冲数据会被解析为下面这样子：
+    //位置数据被储存为32位（4字节）浮点值。
+    //每个位置包含3个这样的值。
+    //在这3个值之间没有空隙（或其他值）。这几个值在数组中紧密排列(Tightly Packed)。
+    //数据中第一个值在缓冲开始的位置。
+    //有了这些信息我们就可以使用glVertexAttribPointer函数告诉OpenGL该如何解析顶点数据（应用到逐个顶点属性上）了：
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *)(3 * sizeof(float)));
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
-    // glVertexAttribPointer锟斤拷锟斤拷锟侥诧拷锟斤拷锟角筹拷锟洁：
-    // 锟斤拷一锟斤拷锟斤拷锟斤拷指锟斤拷要锟斤拷锟矫的讹拷锟斤拷锟斤拷锟皆碉拷位锟斤拷值锟斤拷
-    // 锟节讹拷锟斤拷锟斤拷锟斤拷指锟斤拷锟斤拷锟斤拷锟斤拷锟皆的达拷小锟斤拷
-    // 锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷指锟斤拷锟斤拷锟捷碉拷锟斤拷锟酵ｏ拷锟斤拷锟斤拷锟斤拷GL_FLOAT
-    // 锟斤拷锟侥革拷锟斤拷锟斤拷指锟斤拷锟角凤拷希锟斤拷锟斤拷锟捷憋拷锟斤拷准锟斤拷(Normalize)锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟轿狦L_TRUE锟斤拷
-    // 锟斤拷锟斤拷锟斤拷锟捷讹拷锟结被映锟戒到0锟斤拷锟斤拷锟斤拷锟叫凤拷锟斤拷锟斤拷signed锟斤拷锟斤拷锟斤拷-1锟斤拷锟斤拷1之锟斤拷
-    // 锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟�(Stride)锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷之锟斤拷募锟斤拷锟斤拷
-    // 锟斤拷锟揭伙拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟絭oid*锟斤拷锟斤拷锟斤拷锟斤拷要锟斤拷锟角斤拷锟斤拷锟斤拷锟斤拷锟街碉拷强锟斤拷锟斤拷锟斤拷转锟斤拷锟斤拷
-    // 锟斤拷锟斤拷示位锟斤拷锟斤拷锟斤拷锟节伙拷锟斤拷锟斤拷锟斤拷始位锟矫碉拷偏锟斤拷锟斤拷(Offset)
-    //
-    // glEnableVertexAttribArray锟皆讹拷锟斤拷锟斤拷锟斤拷位锟斤拷值锟斤拷为锟斤拷锟斤拷锟斤拷锟斤拷锟矫讹拷锟斤拷锟斤拷锟皆ｏ拷锟斤拷锟斤拷锟斤拷锟斤拷默锟斤拷锟角斤拷锟矫碉拷
-    //
-    //
-    //----------------锟斤拷锟接讹拷锟斤拷锟斤拷锟斤拷--------------------end
+    // glVertexAttribPointer函数的参数非常多：
+    // 第一个参数指定要配置的顶点属性的位置值。
+    // 第二个参数指定顶点属性的大小。
+    // 第三个参数指定数据的类型，这里是GL_FLOAT
+    // 第四个参数指定是否希望数据被标准化(Normalize)：如果我们设置为GL_TRUE，
+    // 所有数据都会被映射到0（对于有符号型signed数据是-1）到1之间
+    // 第五个参数叫做步长(Stride)，即连续的两个顶点属性之间的间隔。
+    // 最后一个参数的类型是void*，所以需要我们进行这个奇怪的强制类型转换。
+    // 它表示位置数据在缓冲中起始位置的偏移量(Offset)
+    // 
+    // glEnableVertexAttribArray以顶点属性位置值作为参数，启用顶点属性；顶点属性默认是禁用的
+    // 
+    // 
+    //----------------链接顶点属性--------------------end
 
-    // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)锟斤拷锟斤拷锟斤拷锟斤拷OpenGL锟斤拷位锟斤拷锟酵荚拷锟�
-    // 锟斤拷一锟斤拷锟斤拷锟斤拷锟斤拷示锟斤拷锟角达拷锟姐将锟斤拷应锟矫碉拷锟斤拷锟叫碉拷锟斤拷锟斤拷锟轿碉拷锟斤拷锟斤拷捅锟斤拷妫�
-    // 锟节讹拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟狡★拷
-    // 之锟斤拷幕锟斤拷频锟斤拷没锟揭恢憋拷锟斤拷呖锟侥Ｊ斤拷锟斤拷锟斤拷锟斤拷锟斤拷危锟�
-    // 直锟斤拷锟斤拷锟斤拷锟斤拷glPolygonMode(GL_FRONT_AND_BACK, GL_FILL)锟斤拷锟斤拷锟斤拷锟矫伙拷默锟斤拷模式锟斤拷
-    // glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-    // glfwWindowShouldClose锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷每锟斤拷循锟斤拷锟侥匡拷始前锟斤拷锟揭伙拷锟紾LFW锟角凤拷要锟斤拷锟剿筹拷锟斤拷
-    // 锟斤拷锟斤拷堑幕锟斤拷煤锟斤拷锟斤拷锟斤拷锟絫rue然锟斤拷锟斤拷染循锟斤拷锟斤拷锟斤拷锟斤拷耍锟街拷锟轿拷锟斤拷蔷涂锟斤拷怨乇锟接︼拷贸锟斤拷锟斤拷恕锟�
-    // glfwPollEvents锟斤拷锟斤拷锟斤拷锟斤拷锟矫伙拷写锟斤拷锟绞裁达拷录锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟诫、锟斤拷锟斤拷贫锟斤拷龋锟斤拷锟�
-    // 锟斤拷锟铰达拷锟斤拷状态锟斤拷锟斤拷锟斤拷锟矫讹拷应锟侥回碉拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷通锟斤拷锟截碉拷锟斤拷锟斤拷锟街讹拷锟斤拷锟矫ｏ拷锟斤拷
-    // glfwSwapBuffers锟斤拷锟斤拷锟结交锟斤拷锟斤拷色锟斤拷锟藉（锟斤拷锟斤拷一锟斤拷锟斤拷锟斤拷锟斤拷GLFW锟斤拷锟斤拷每一锟斤拷锟斤拷锟斤拷锟斤拷色值锟侥大缓冲）锟斤拷
-    // 锟斤拷锟斤拷锟斤拷一锟斤拷锟斤拷锟叫憋拷锟斤拷锟斤拷锟斤拷锟狡ｏ拷锟斤拷锟揭斤拷锟斤拷锟斤拷为锟斤拷锟斤拷锟绞撅拷锟斤拷锟侥伙拷稀锟�
+    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)函数配置OpenGL如何绘制图元。
+    //第一个参数表示我们打算将其应用到所有的三角形的正面和背面，
+    //第二个参数告诉我们用线来绘制。
+    //之后的绘制调用会一直以线框模式绘制三角形，
+    //直到我们用glPolygonMode(GL_FRONT_AND_BACK, GL_FILL)将其设置回默认模式。
+    //glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+    //glfwWindowShouldClose函数在我们每次循环的开始前检查一次GLFW是否被要求退出，
+    //如果是的话该函数返回true然后渲染循环便结束了，之后为我们就可以关闭应用程序了。
+    //glfwPollEvents函数检查有没有触发什么事件（比如键盘输入、鼠标移动等）、
+    //更新窗口状态，并调用对应的回调函数（可以通过回调方法手动设置）。
+    //glfwSwapBuffers函数会交换颜色缓冲（它是一个储存着GLFW窗口每一个像素颜色值的大缓冲），
+    //它在这一迭代中被用来绘制，并且将会作为输出显示在屏幕上。
+
 
     Shader ourShader("../../../OpenGLDemo/shader/vert.shader", "../../../OpenGLDemo/shader/frag.shader");
 
     unsigned int texture1, texture2;
     glGenTextures(1, &texture1);
     glBindTexture(GL_TEXTURE_2D, texture1);
-    // 为锟斤拷前锟襟定碉拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟矫伙拷锟狡★拷锟斤拷锟剿凤拷式
+    // 为当前绑定的纹理对象设置环绕、过滤方式
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -256,37 +266,37 @@ int main()
 
     stbi_set_flip_vertically_on_load(true);
     int width, height, nrChannels;
-    unsigned char *data = stbi_load("../../../OpenGLDemo/texture/container.jpg", &width, &height, &nrChannels, 0); // load
+    unsigned char* data = stbi_load("../../../OpenGLDemo/texture/container.jpg", &width, &height, &nrChannels, 0);//load
     if (data)
     {
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data); // generate
-        glGenerateMipmap(GL_TEXTURE_2D);                                                          // 为锟斤拷前锟襟定碉拷锟斤拷锟斤拷锟皆讹拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷要锟侥多级锟斤拷远锟斤拷锟斤拷
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);//generate
+        glGenerateMipmap(GL_TEXTURE_2D);//为当前绑定的纹理自动生成所有需要的多级渐远纹理
     }
     else
     {
         std::cout << "Failed to load texture" << std::endl;
     }
-    stbi_image_free(data); // free
+    stbi_image_free(data);//free
 
     glGenTextures(1, &texture2);
     glBindTexture(GL_TEXTURE_2D, texture2);
-    // 为锟斤拷前锟襟定碉拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟矫伙拷锟狡★拷锟斤拷锟剿凤拷式
+    // 为当前绑定的纹理对象设置环绕、过滤方式
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-    data = stbi_load("../../../OpenGLDemo/texture/awesomeface.png", &width, &height, &nrChannels, 0); // load
+    data = stbi_load("../../../OpenGLDemo/texture/awesomeface.png", &width, &height, &nrChannels, 0);//load
     if (data)
     {
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data); // generate
-        glGenerateMipmap(GL_TEXTURE_2D);                                                            // 为锟斤拷前锟襟定碉拷锟斤拷锟斤拷锟皆讹拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷要锟侥多级锟斤拷远锟斤拷锟斤拷
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);//generate
+        glGenerateMipmap(GL_TEXTURE_2D);//为当前绑定的纹理自动生成所有需要的多级渐远纹理
     }
     else
     {
         std::cout << "Failed to load texture" << std::endl;
     }
-    stbi_image_free(data); // free
+    stbi_image_free(data);//free
 
     ourShader.Use();
     ourShader.SetInt("texture1", 0);
@@ -298,22 +308,24 @@ int main()
         angles[i] = rand() % 150 + 1.0f;
     }
 
+
     glEnable(GL_DEPTH_TEST);
+
 
     while (!windowMgr.CheckWindowShouldClose())
     {
         float currentFrame = (float)glfwGetTime();
         windowMgr.deltaTime = currentFrame - windowMgr.lastFrame;
         windowMgr.lastFrame = currentFrame;
-        // 锟斤拷锟斤拷
+        //输入
         windowMgr.MonitorInputEvent();
 
-        // 锟斤拷染
-        // glClearColor 锟斤拷锟斤拷锟斤拷锟斤拷锟侥伙拷锟斤拷玫锟斤拷锟缴�
-        // glClear 锟斤拷锟斤拷锟侥伙拷锟斤拷锟缴拷锟斤拷澹拷锟斤拷锟斤拷锟揭伙拷锟斤拷锟斤拷锟轿�(Buffer Bit)锟斤拷指锟斤拷要锟斤拷盏幕锟斤拷锟�
+        //渲染
+        //glClearColor 设置清空屏幕所用的颜色
+        //glClear 清空屏幕的颜色缓冲，它接受一个缓冲位(Buffer Bit)来指定要清空的缓冲
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        // glDisable(GL_POLYGON_OFFSET_FILL);
+        //glDisable(GL_POLYGON_OFFSET_FILL);
 
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, texture1);
@@ -343,26 +355,26 @@ int main()
             ourShader.SetMat4("model", m);
             glDrawArrays(GL_TRIANGLES, 0, 36);
         }
-        // glEnable(GL_POLYGON_OFFSET_FILL);
-        // glPolygonOffset(-1, -1);
+        //glEnable(GL_POLYGON_OFFSET_FILL);
+        //glPolygonOffset(-1, -1);
 
-        // glDrawArrays锟斤拷锟斤拷锟斤拷一锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟角达拷锟斤拷锟斤拷频锟絆penGL图元锟斤拷锟斤拷锟酵★拷
-        // 锟节讹拷锟斤拷锟斤拷锟斤拷指锟斤拷锟剿讹拷锟斤拷锟斤拷锟斤拷锟斤拷锟绞硷拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟�0
-        // 锟斤拷锟揭伙拷锟斤拷锟斤拷锟街革拷锟斤拷锟斤拷谴锟斤拷锟斤拷锟狡讹拷锟劫革拷锟斤拷锟斤拷
+        //glDrawArrays函数第一个参数是我们打算绘制的OpenGL图元的类型。
+        //第二个参数指定了顶点数组的起始索引，我们这里填0
+        //最后一个参数指定我们打算绘制多少个顶点
 
-        // 锟斤拷一锟斤拷锟斤拷锟斤拷指锟斤拷锟斤拷锟斤拷锟角伙拷锟狡碉拷模式锟斤拷锟斤拷锟斤拷锟絞lDrawArrays锟斤拷一锟斤拷锟斤拷
-        // 锟节讹拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟角达拷锟斤拷锟斤拷贫锟斤拷锟侥革拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷6锟斤拷也锟斤拷锟斤拷说锟斤拷锟斤拷一锟斤拷锟斤拷要锟斤拷锟斤拷6锟斤拷锟斤拷锟姐。
-        // 锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟酵ｏ拷锟斤拷锟斤拷锟斤拷GL_UNSIGNED_INT锟斤拷
-        // 锟斤拷锟揭伙拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷强锟斤拷锟街革拷锟紼BO锟叫碉拷偏锟斤拷锟斤拷锟斤拷锟斤拷锟竭达拷锟斤拷一锟斤拷锟斤拷锟斤拷锟斤拷锟介，锟斤拷锟斤拷锟斤拷锟角碉拷锟姐不锟斤拷使锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷时锟斤拷
-        // glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);//锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷染
-        // glBindVertexArray(0);//锟斤拷锟絍AO
+        //第一个参数指定了我们绘制的模式，这个和glDrawArrays的一样。
+        //第二个参数是我们打算绘制顶点的个数，这里填6，也就是说我们一共需要绘制6个顶点。
+        //第三个参数是索引的类型，这里是GL_UNSIGNED_INT。
+        //最后一个参数里我们可以指定EBO中的偏移量（或者传递一个索引数组，但是这是当你不在使用索引缓冲对象的时候）
+        //glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);//从索引缓冲渲染
+        //glBindVertexArray(0);//解绑VAO
 
         windowMgr.SwapBufferAndPollIOEvents();
     }
 
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
-    // glDeleteBuffers(1, &EBO);
+    //glDeleteBuffers(1, &EBO);
 
     return 0;
 }

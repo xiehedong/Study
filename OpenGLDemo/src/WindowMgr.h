@@ -1,3 +1,6 @@
+#ifndef WINDOWMGR_H
+#define WINDOWMGR_H
+
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
@@ -133,3 +136,5 @@ public:
         glfwSetScrollCallback(_window, callback);
     }
 };
+
+#endif
