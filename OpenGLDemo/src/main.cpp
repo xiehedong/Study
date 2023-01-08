@@ -253,7 +253,7 @@ int main()
     //它在这一迭代中被用来绘制，并且将会作为输出显示在屏幕上。
 
 
-    Shader ourShader("../../../OpenGLDemo/shader/vert.shader", "../../../OpenGLDemo/shader/frag.shader");
+    Shader ourShader("../../../shader/vert.shader", "../../../shader/frag.shader");
 
     unsigned int texture1, texture2;
     glGenTextures(1, &texture1);
@@ -266,7 +266,7 @@ int main()
 
     stbi_set_flip_vertically_on_load(true);
     int width, height, nrChannels;
-    unsigned char* data = stbi_load("../../../OpenGLDemo/texture/container.jpg", &width, &height, &nrChannels, 0);//load
+    unsigned char* data = stbi_load("../../../texture/container.jpg", &width, &height, &nrChannels, 0);//load
     if (data)
     {
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);//generate
@@ -286,7 +286,7 @@ int main()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-    data = stbi_load("../../../OpenGLDemo/texture/awesomeface.png", &width, &height, &nrChannels, 0);//load
+    data = stbi_load("../../../texture/awesomeface.png", &width, &height, &nrChannels, 0);//load
     if (data)
     {
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);//generate
