@@ -1,4 +1,8 @@
+/OpenGLDemo/build
+/OpenGLDemo/.vscode
+/OpenGLDemo/.vs
+/OpenGLDemo/out
 /build
 /.vscode
 /.vs
-/OpenGLDemo/out
+/out
