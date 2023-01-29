@@ -9,11 +9,11 @@ void* buildCode() {
     char* pJmp = code + 10;
     char* pAddress;
 
-    //mov address, gi 18
+    //mov gi, 18
     pMov[0] = 0xc7;
     pMov[1] = 0x05;
     pAddress = pMov + 2;
-    *((int*)(pAddress)) = (int)&gi;
+    *((int*)pAddress) = (int)&gi;
     *((int*)(pAddress + 4)) = 18;
     /*int dz = (int)&gi;
     int num = 18;
@@ -37,18 +37,21 @@ int main()
     __asm {
         mov address, offset _lb1
     }
+
     gi = 12;
     printf("gi = %d\n", gi);
+
     __asm jmp code
+
     gi = 13;
 
 _lb1:
-    printf("gi = %d", gi);
+    printf("gi = %d\n", gi);
 
     system("pause");
 
-    //delete code;
-    //code = nullptr;
+    delete code;
+    code = nullptr;
     return 0;
 }
 
