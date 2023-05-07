@@ -41,17 +41,31 @@ function loadOBJ(renderer, path, name) {
 
 							let textureSample = 0;
 							let myMaterial;
+							let light;
+							if (Array.isArray(renderer.lights)) 
+							{
+								light = renderer.lights[0];
+							}
+							else 
+							{
+								light = renderer.lights;
+							}
+
 							if (colorMap != null) {
 								textureSample = 1;
 								myMaterial = new Material({
 									'uSampler': { type: 'texture', value: colorMap },
 									'uTextureSample': { type: '1i', value: textureSample },
-									'uKd': { type: '3fv', value: mat.color.toArray() }
+									'uKd': { type: '3fv', value: mat.color.toArray() },
+									'uks':{type:'3fv', value: light.entity.mat.color },
+									'uLightIntensity':{type:'1f', value: 10.0 }
 								},[],VertexShader, FragmentShader);
 							}else{
 								myMaterial = new Material({
 									'uTextureSample': { type: '1i', value: textureSample },
-									'uKd': { type: '3fv', value: mat.color.toArray() }
+									'uKd': { type: '3fv', value: mat.color.toArray() },
+									'uks':{type:'3fv', value: light.entity.mat.color },
+									'uLightIntensity':{type:'1f', value: 10.0 }
 								},[],VertexShader, FragmentShader);
 							}
 							
