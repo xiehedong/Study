@@ -1,11 +1,3 @@
-/build
-/.vscode
+/.build
 /.vs
 /out
-/OpenGLDemo/build
-/OpenGLDemo/.vscode
-/OpenGLDemo/.vs
-/OpenGLDemo/out
-/Demo-lmst/.vs
-/Demo-lmst/out
-/Demo-lmst/build

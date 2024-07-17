@@ -1,0 +1,142 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		// {
+        //     "label": "Configure CMake",// task的名字
+        //     "type": "process",
+        //     "command": "cmake",
+        //     "args": [
+        //         ".."
+        //     ],
+        //     "options": {
+        //         "cwd": ""// 表示当前执行目录build文件夹
+        //     },
+        //     "group": "build",
+        //     "presentation": {// 一些控制台显示配置
+        //         "echo": true,
+        //         "reveal": "always",
+        //         "focus": false,
+        //         "panel": "shared",
+        //         "showReuseMessage": true,
+        //         "clear": false
+        //     },
+        //     "problemMatcher":"$msCompile",// Use the standard MS compiler pattern to detect errors, warnings and infos
+        //     "dependsOn":[]// 依赖的任务，在本任务执行前先执行mkbuild任务
+        // }
+		{
+			"type": "shell",
+			"label": "Configure CMake",
+			"command": "cmd.exe",
+			"args": [
+				"/C",
+                "${workspaceRoot}/.vscode/build_windows.bat",
+				"Configure"
+            ],
+			"options": {
+				"cwd": "./"
+			},
+			"group": "build",
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared",
+				"showReuseMessage": true,
+				"clear": true
+			},
+			"problemMatcher": "$msCompile"
+		},
+		{
+			"type": "process",
+			"label": "ReConfigure CMake",
+			"command": "cmd.exe",
+			"args": [
+				"/C",
+                "${workspaceRoot}/.vscode/build_windows.bat",
+				"ReConfigure"
+            ],
+			"options": {
+				"cwd": "./"
+			},
+			"group": "build",
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared",
+				"showReuseMessage": true,
+				"clear": true
+			},
+			"problemMatcher": "$msCompile"
+		},
+		{
+			"label": "Build Debug",
+			"type": "process",
+			"command": "cmd.exe",
+			"args": [
+				"/C",
+                "${workspaceRoot}/.vscode/build_windows.bat",
+				"Debug"
+            ],
+			"options": {
+				"cwd": "./"
+			},
+			"group": "build",
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared",
+				"showReuseMessage": true,
+				"clear": true
+			},
+			"problemMatcher": "$msCompile"
+		},
+		{
+			"label": "Build Release",
+			"type": "process",
+			"command": "cmd.exe",
+			"args": [
+				"/C",
+                "${workspaceRoot}/.vscode/build_windows.bat",
+				"Release"
+            ],
+			"options": {
+				"cwd": "./"
+			},
+			"group": "build",
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared",
+				"showReuseMessage": true,
+				"clear": true
+			},
+			"problemMatcher": "$msCompile"
+		},
+		{
+			"label": "Build RelWithDebInfo",
+			"type": "process",
+			"command": "cmd.exe",
+			"args": [
+				"/C",
+                "${workspaceRoot}/.vscode/build_windows.bat",
+				"RelWithDebInfo"
+            ],
+			"options": {
+				"cwd": "./"
+			},
+			"group": "build",
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared",
+				"showReuseMessage": true,
+				"clear": true
+			},
+			"problemMatcher": "$msCompile"
+		}
+	]
+}

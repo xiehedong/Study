@@ -1,0 +1,2 @@
+#define LearnCmake_VERSION_MAJOR @LearnCmake_VERSION_MAJOR@
+#define LearnCmake_VERSION_MINOR @LearnCmake_VERSION_MINOR@

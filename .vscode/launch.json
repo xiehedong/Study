@@ -1,0 +1,42 @@
+{
+    // 使用 IntelliSense 了解相关属性。 
+    // 悬停以查看现有属性的描述。
+    // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        
+        {
+            "name": "Launch Debug",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceRoot}/.build/Debug/LearnCmake",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceRoot}",
+            "environment": [],
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Launch Release",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceRoot}/.build/Release/LearnCmake",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceRoot}",
+            "environment": [],
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Launch RelWithDebInfo",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceRoot}/.build/RelWithDebInfo/LearnCmake",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceRoot}",
+            "environment": [],
+            "console": "integratedTerminal"
+        }
+    ]
+}

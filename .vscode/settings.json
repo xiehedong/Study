@@ -1,0 +1,42 @@
+{
+    "cmake.options.statusBarVisibility": "visible",
+    "cmake.pinnedCommands": [
+        "workbench.action.tasks.configureTaskRunner",
+        "workbench.action.tasks.runTask"
+    ],
+    "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
+    "cmake.generator": "Ninja",
+    "cmake.cacheInit": null,
+    "cmake.buildTask": true,
+    "cmake.showOptionsMovedNotification": false,
+    "cmake.configureSettings": {},
+    "cmake.debugConfig": {},
+    "cmake.defaultVariants": {
+        "buildType": {
+            "default": "debug",
+            "description": "生成类型。",
+            "choices": {
+                "debug": {
+                    "short": "Debug",
+                    "long": "禁用优化 - 包括调试信息。",
+                    "buildType": "Debug"
+                },
+                "release": {
+                    "short": "Release",
+                    "long": "进行优化，提高速度 - 排除调试信息。",
+                    "buildType": "Release"
+                },
+                "minsize": {
+                    "short": "MinSizeRel",
+                    "long": "优化最小二进制大小 - 排除调试信息。",
+                    "buildType": "MinSizeRel"
+                },
+                "reldeb": {
+                    "short": "RelWithDebInfo",
+                    "long": "进行优化，提高速度 - 包括调试信息。",
+                    "buildType": "RelWithDebInfo"
+                }
+            }
+        }
+    }
+}
